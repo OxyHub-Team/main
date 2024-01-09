@@ -1,1 +1,1 @@
-{"test","denchick"}
+test, Denchick
