@@ -65,7 +65,7 @@ local Tab7 = Window:MakeTab({
 local Section = Tab:AddSection({
   Name = "Information"
 })
-Tab:AddParagraph("Welcome " .. api.nickname .. "!","\nScript Version: b0.1 \nPlace Version: " .. api.placeversion)
+Tab:AddParagraph("Welcome " .. api.nickname .. "!","\nScript version: b1.0\nLast Update: 10/19/2024\n")
 
 Tab3:AddToggle({
   Name = "Auto Roll",
