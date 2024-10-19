@@ -2,8 +2,14 @@ local OrionLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/OxyH
 getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/Boxking776/kocmoc/main/api.lua"))()
 local Window = OrionLib:MakeWindow({Name = "PETS GO ┃ OxyHub b0.1", HidePremium = false, SaveConfig = true, ConfigFolder = "OxyHub", IntroIcon = "rbxassetid://137607810655683", IntroText = "OxyHub", Icon = "rbxassetid://137607810655683"})
 
+-----------------------------------------------
+
 _G.rolls = true
 _G.autoupgrades = true
+
+-----------------------------------------------
+
+-----------------------------------------------
 
 function rolls()
   while _G.rolls == true do
@@ -25,6 +31,10 @@ function autoupgrades()
     end
   end
 end
+
+-----------------------------------------------
+
+-----------------------------------------------
 
 local Tab = Window:MakeTab({
   Name = "Home",
@@ -62,9 +72,14 @@ local Tab7 = Window:MakeTab({
   PremiumOnly = false
 })
 
+-----------------------------------------------
+
+-----------------------------------------------
+
 local Section = Tab:AddSection({
   Name = "Information"
 })
+
 Tab:AddParagraph("Hello " .. api.nickname .. "!","\nScript version: b0.1\nLast Update: 10/19/2024\n")
 Tab:AddButton({
 	Name = "Copy Discord Server Link",
@@ -72,6 +87,10 @@ Tab:AddButton({
       setclipboard("https://discord.gg/gPt63592fA")
   	end    
 })
+
+-----------------------------------------------
+
+-----------------------------------------------
 
 Tab3:AddToggle({
   Name = "Auto Roll",
@@ -82,6 +101,10 @@ Tab3:AddToggle({
   end    
 })
 
+-----------------------------------------------
+
+-----------------------------------------------
+
 Tab5:AddToggle({
   Name = "Auto Upgrades",
   Default = false,
@@ -90,3 +113,5 @@ Tab5:AddToggle({
     autoupgrades()
   end    
 })
+
+-----------------------------------------------
