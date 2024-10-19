@@ -1,57 +1,85 @@
-
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/OxyHub-Team/ui-library/refs/heads/main/Rayfield.lua'))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/OxyHub-Team/ui-library/refs/heads/main/orion.lua')))()
 getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/Boxking776/kocmoc/main/api.lua"))()
+local Window = OrionLib:MakeWindow({Name = "PETS GO ┃ OxyHub b0.1", HidePremium = false, SaveConfig = true, ConfigFolder = "OxyHub", IntroIcon = "rbxassetid://137607810655683", IntroText = "OxyHub", Icon = "rbxassetid://137607810655683"})
 
-local Window = Rayfield:CreateWindow({
-    Name = "PETS GO ┃ OxyHub b0.1",
-    LoadingTitle = "OxyHub is Loading, please wait.",
-    LoadingSubtitle = "Developed by OxyHub",
-    ConfigurationSaving = {
-       Enabled = true,
-       FolderName = OxyHub,
-       FileName = "PETSGO"
-    },
-    Discord = {
-       Enabled = false,
-       Invite = "noinvitelink",
-       RememberJoins = true
-    },
-    KeySystem = false,
-    KeySettings = {
-       Title = "Untitled",
-       Subtitle = "Key System",
-       Note = "No method of obtaining the key is provided",
-       FileName = "Key",
-       SaveKey = true,
-       GrabKeyFromSite = false,
-       Key = {"Hello"}
-    }
- })
- local Tab = Window:CreateTab("Home", 138276043416989)
- local Tab2 = Window:CreateTab("Optimization", 139399181305478)
- local Tab3 = Window:CreateTab("Rolls", 106353115333120)
- local Tab4 = Window:CreateTab("Breakbles", 135708807327995)
- local Tab5 = Window:CreateTab("Autos", 90498939243137)
- local Tab6 = Window:CreateTab("Profile", 76644783326175)
- local Tab7 = Window:CreateTab("Settings", 86008121828405)
+_G.rolls = true
+_G.autoupgrades = true
 
- local Section = Tab:CreateSection("Information:")
- local Paragraph = Tab:CreateParagraph({Title = "Welcome " .. api.nickname .. "!", Content = "\nScript version: b1.0\nLast Update: 10/19/2024\n"})
- local Paragraph = Tab:CreateParagraph({Title = "Status:", Content = "Rolling: "})
+function rolls()
+  while _G.rolls == true do
+       game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Eggs_Roll"):InvokeServer()
+       wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
+  end
+end
 
- local Toggle = Tab:CreateToggle({
-    Name = "Toggle Example1",
-    CurrentValue = false,
-    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        print(Value)
-    end,
- })
- local Toggle = Tab:CreateToggle({
-    Name = "Toggle Example2",
-    CurrentValue = false,
-    Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        print(Value)
-    end,
- })
+function autoupgrades()
+  local args = {
+    "Coin Crates",
+    "Break Even Faster",
+    "Breakable Overload"
+  }
+  while _G.autoupgrades == true do
+    for _, arg in ipairs(args) do
+      game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Upgrades_Purchase"):InvokeServer(arg)
+    end
+  end
+end
+
+local Tab = Window:MakeTab({
+  Name = "Home",
+  Icon = "rbxassetid://138276043416989",
+  PremiumOnly = false
+})
+local Tab2 = Window:MakeTab({
+  Name = "Optimization",
+  Icon = "rbxassetid://103268983581906",
+  PremiumOnly = false
+})
+local Tab3 = Window:MakeTab({
+  Name = "Rolls",
+  Icon = "rbxassetid://106353115333120",
+  PremiumOnly = false
+})
+local Tab4 = Window:MakeTab({
+  Name = "Breakbles",
+  Icon = "rbxassetid://135708807327995",
+  PremiumOnly = false
+})
+local Tab5 = Window:MakeTab({
+  Name = "Autos",
+  Icon = "rbxassetid://139399181305478",
+  PremiumOnly = false
+})
+local Tab6 = Window:MakeTab({
+  Name = "Profile",
+  Icon = "rbxassetid://117514197104865",
+  PremiumOnly = false
+})
+local Tab7 = Window:MakeTab({
+  Name = "Settings",
+  Icon = "rbxassetid://86008121828405",
+  PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+  Name = "Information"
+})
+Tab:AddParagraph("Welcome " .. api.nickname .. "!","\nScript Version: b0.1 \nPlace Version: " .. api.placeversion)
+
+Tab3:AddToggle({
+  Name = "Auto Roll",
+  Default = false,
+  Callback = function(Value)
+      _G.rolls = Value
+      rolls()
+  end    
+})
+
+Tab5:AddToggle({
+  Name = "Auto Upgrades",
+  Default = false,
+  Callback = function(Value)
+    _G.autoupgrades = Value
+    autoupgrades()
+  end    
+})
