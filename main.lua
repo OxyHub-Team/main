@@ -65,7 +65,13 @@ local Tab7 = Window:MakeTab({
 local Section = Tab:AddSection({
   Name = "Information"
 })
-Tab:AddParagraph("Welcome " .. api.nickname .. "!","\nScript version: b1.0\nLast Update: 10/19/2024\n")
+Tab:AddParagraph("Welcome " .. api.nickname .. "!","\nScript version: b0.1\nLast Update: 10/19/2024\n")
+Tab:AddButton({
+	Name = "Copy Discord Server Link",
+	Callback = function()
+    setclipboard("https://discord.gg/gPt63592fA")
+  	end    
+})
 
 Tab3:AddToggle({
   Name = "Auto Roll",
