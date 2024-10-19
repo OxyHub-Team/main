@@ -69,7 +69,7 @@ Tab:AddParagraph("Welcome " .. api.nickname .. "!","\nScript version: b0.1\nLast
 Tab:AddButton({
 	Name = "Copy Discord Server Link",
 	Callback = function()
-    setclipboard("https://discord.gg/gPt63592fA")
+      setclipboard("https://discord.gg/gPt63592fA")
   	end    
 })
 
