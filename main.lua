@@ -12,24 +12,37 @@ _G.autoupgrades = true
 -----------------------------------------------
 
 function rolls()
-  while _G.rolls == true do
-       game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Eggs_Roll"):InvokeServer()
-       wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
-  end
+    while _G.rolls == true do
+         game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Eggs_Roll"):InvokeServer()
+         wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
+    end
 end
 
 function autoupgrades()
-  while _G.autoupgrades == true do
-    local upgradeObject = workspace.__THINGS.Upgrades["Upgrades Frontend Render"]
-    
-    if upgradeObject then
-        for _, child in pairs(upgradeObject:GetChildren()) do
-            print(child.Name) -- Выводим имя каждого дочернего объекта
-        end
-    else
-        print("Объект не найден!")
+    -- Функция для "прокачки" объекта
+    local function upgradeObject(objectName)
+        game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Upgrades_Purchase"):InvokeServer(objectName)
+        -- Здесь можно добавить логику для прокачки объекта
     end
-  end
+
+    -- Рекурсивная функция для обхода всех объектов, включая вложенные
+    local function processFolder(folder)
+        -- Перебираем все объекты в папке
+        for _, obj in ipairs(folder:GetChildren()) do
+            -- Вызываем функцию для текущего объекта
+            upgradeObject(obj.Name)
+
+            -- Если объект сам является контейнером для других объектов (например, это модель или папка),
+            -- вызываем эту же функцию рекурсивно для обработки вложенных объектов
+            if #obj:GetChildren() > 0 then
+                processFolder(obj)  -- Рекурсивный вызов
+            end
+        end
+    end
+
+    -- Пример использования: передаем папку для обработки
+    local rootFolder = game:GetService("ReplicatedStorage").__DIRECTORY.Upgrades.Root  -- Замените на вашу папку
+    processFolder(rootFolder)
 end
 
 -----------------------------------------------
