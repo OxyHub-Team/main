@@ -23,7 +23,6 @@ function autoupgrades()
 	wait(0.5)
         -- Функция для "прокачки" объекта
         local function upgradeObject(objectName)
-            print("Прокачано" .. objectName)
             game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Upgrades_Purchase"):InvokeServer(objectName)
             -- Здесь можно добавить логику для прокачки объекта
         end
