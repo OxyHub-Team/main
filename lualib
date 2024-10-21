@@ -339,52 +339,44 @@ local function UnpackColor(Color)
 end
 
 local function LoadConfiguration(Configuration)
-	local Data = HttpService:JSONDecode(Configuration)
-	for FlagName, FlagValue in next, Data do
-		if ArrayFieldLibrary.Flags[FlagName] then
-			spawn(function() 
-				if ArrayFieldLibrary.Flags[FlagName].Type == "ColorPicker" then
-					ArrayFieldLibrary.Flags[FlagName]:Set(UnpackColor(FlagValue))
-				else
-					if ArrayFieldLibrary.Flags[FlagName].CurrentValue or ArrayFieldLibrary.Flags[FlagName].CurrentKeybind or ArrayFieldLibrary.Flags[FlagName].CurrentOption or ArrayFieldLibrary.Flags[FlagName].Color ~= FlagValue then ArrayFieldLibrary.Flags[FlagName]:Set(FlagValue) end
-				end    
-			end)
-		else
-			ArrayFieldLibrary:Notify({Title = "Flag Error", Content = "ArrayField was unable to find '"..FlagName.. "'' in the current script"})
-		end
-	end
+    local Data = HttpService:JSONDecode(Configuration)
+    for FlagName, FlagValue in pairs(Data) do
+        if ArrayFieldLibrary.Flags[FlagName] then
+            task.spawn(function() 
+                local flag = ArrayFieldLibrary.Flags[FlagName]
+                if flag.Type == "ColorPicker" then
+                    flag:Set(UnpackColor(FlagValue))
+                else
+                    if flag.CurrentValue ~= nil or flag.CurrentKeybind ~= nil or flag.CurrentOption ~= nil or flag.Color ~= FlagValue then
+                        flag:Set(FlagValue) 
+                    end
+                end    
+            end)
+        else
+            ArrayFieldLibrary:Notify({Title = "Flag Error", Content = "ArrayField was unable to find '"..FlagName.."' in the current script"})
+        end
+    end
 end
+
 
 local function SaveConfiguration()
     if not CEnabled then return end
     local Data = {}
-
-    -- Сбор данных флагов
-    for i, v in pairs(ArrayFieldLibrary.Flags) do
+    for i,v in pairs(ArrayFieldLibrary.Flags) do
         if v.Type == "ColorPicker" then
-            Data[i] = PackColor(v.Color)  -- Сохраняем цвет как упакованное значение
+            Data[i] = PackColor(v.Color)
         else
-            -- Проверяем на существование различных параметров и записываем наиболее подходящий
-            if v.CurrentValue ~= nil then
-                Data[i] = v.CurrentValue
-            elseif v.CurrentKeybind ~= nil then
-                Data[i] = v.CurrentKeybind
-            elseif v.Color ~= nil then
-                Data[i] = v.Color
-            elseif v.CurrentOption ~= nil then
-                Data[i] = v.CurrentOption
-            end
+            Data[i] = v.CurrentValue or v.CurrentKeybind or v.Color or v.CurrentOption
         end
     end
-
-    -- Проверяем, что все папки созданы перед сохранением файла
+    
+    -- Проверяем и создаем папку перед сохранением
     if not isfolder(ConfigurationFolder) then
         makefolder(ConfigurationFolder)
     end
 
-    -- Сохранение данных в файл
-    local filePath = ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension
-    writefile(filePath, HttpService:JSONEncode(Data))
+    -- Сохраняем данные
+    writefile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension, HttpService:JSONEncode(Data))
 end
 
 
@@ -1253,20 +1245,24 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 		if not Settings.ConfigurationSaving.FileName then
 			Settings.ConfigurationSaving.FileName = tostring(game.PlaceId)
 		end
+		
+		-- Проверка существования папки
 		if not isfolder(ArrayFieldLibrary.."/".."Configuration Folders") then
-
+			makefolder(ArrayFieldLibrary.."/".."Configuration Folders")
 		end
+		
 		if Settings.ConfigurationSaving.Enabled == nil then
 			Settings.ConfigurationSaving.Enabled = false
 		end
+		
 		CFileName = Settings.ConfigurationSaving.FileName
 		ConfigurationFolder = Settings.ConfigurationSaving.FolderName or ConfigurationFolder
 		CEnabled = Settings.ConfigurationSaving.Enabled
-
+	
 		if Settings.ConfigurationSaving.Enabled then
 			if not isfolder(ConfigurationFolder) then
 				makefolder(ConfigurationFolder)
-			end	
+			end
 		end
 	end)
 
