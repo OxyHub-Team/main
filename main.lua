@@ -6,6 +6,9 @@ local Window = OrionLib:MakeWindow({Name = "PETS GO ┃ OxyHub b0.1", HidePremiu
 
 _G.rolls = true
 _G.autoupgrades = true
+_G.Pets = true
+_G.World = true
+_G.Breakables = true
 
 -----------------------------------------------
 
@@ -13,10 +16,11 @@ _G.autoupgrades = true
 
 function rolls()
     while _G.rolls == true do
-         game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Eggs_Roll"):InvokeServer()
-         wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
+        game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Eggs_Roll"):InvokeServer()
+        wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
     end
 end
+
 
 function autoupgrades()
     while _G.autoupgrades == true do
@@ -48,44 +52,129 @@ function autoupgrades()
     end
 end
 
+
+function hideDetails()
+    local detailsFolder = game.Workspace:FindFirstChild("MAP"):FindFirstChild("PARTS"):FindFirstChild("DETAILS")  -- Папка с деталями карты
+    local storage = game.ReplicatedStorage:FindFirstChild("Details")  -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Details"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(detailsFolder:GetChildren()) do
+        obj.Parent = storage  -- Перемещаем объект в ReplicatedStorage
+    end
+end
+
+function showDetails()
+    local detailsFolder = game.Workspace:FindFirstChild("MAP"):FindFirstChild("PARTS"):FindFirstChild("DETAILS")  -- Папка с деталями карты
+    local storage = game.ReplicatedStorage:FindFirstChild("Details")  -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Details"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = detailsFolder  -- Перемещаем объекты обратно в Workspace
+    end
+end
+
+
+function hidePets()
+    local petsFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Pets") -- Папка с питомцами
+    local storage = game.ReplicatedStorage:FindFirstChild("Pets") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Pets"
+        storage.Parent = game.ReplicatedStorage
+    end
+
+    for _, obj in ipairs(petsFolder:GetChildren()) do
+        if obj.Name ~= "Highlight" then
+            obj.Parent = storage -- Перемещаем объект в ReplicatedStorage
+        end
+    end
+end
+    
+function showPets()
+    local petsFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Pets") -- Папка с питомцами
+    local storage = game.ReplicatedStorage:FindFirstChild("Pets") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Pets"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = petsFolder -- Перемещаем объекты обратно в Pets
+    end
+end
+
+
+function hideWorld()
+    local waterFolder = game.Workspace:WaitForChild("OUTER") -- Папка с водой
+    local storage = game.ReplicatedStorage:FindFirstChild("World") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "World"
+        storage.Parent = game.ReplicatedStorage
+    end
+
+    for _, obj in ipairs(waterFolder:GetChildren()) do
+        obj.Parent = storage -- Перемещаем объект в ReplicatedStorage
+    end
+end
+
+function showWorld()
+    local waterFolder = game.Workspace:WaitForChild("OUTER") -- Папка с водой 
+    local storage = game.ReplicatedStorage:FindFirstChild("World") -- Папка для хранения скрытых объектов 
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "World"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = waterFolder -- Перемещаем объекты обратно в Water 
+    end 
+end
+
 -----------------------------------------------
 
 -----------------------------------------------
 
 local Tab = Window:MakeTab({
-  Name = "Home",
-  Icon = "rbxassetid://138276043416989",
-  PremiumOnly = false
+    Name = "Home",
+    Icon = "rbxassetid://138276043416989",
+    PremiumOnly = false
 })
 local Tab2 = Window:MakeTab({
-  Name = "Optimization",
-  Icon = "rbxassetid://103268983581906",
-  PremiumOnly = false
+    Name = "Optimization",
+    Icon = "rbxassetid://103268983581906",
+    PremiumOnly = false
 })
 local Tab3 = Window:MakeTab({
-  Name = "Rolls",
-  Icon = "rbxassetid://106353115333120",
-  PremiumOnly = false
+    Name = "Rolls",
+    Icon = "rbxassetid://106353115333120",
+    PremiumOnly = false
 })
 local Tab4 = Window:MakeTab({
-  Name = "Breakbles",
-  Icon = "rbxassetid://135708807327995",
-  PremiumOnly = false
+    Name = "Breakbles",
+    Icon = "rbxassetid://135708807327995",
+    PremiumOnly = false
 })
 local Tab5 = Window:MakeTab({
-  Name = "Autos",
-  Icon = "rbxassetid://139399181305478",
-  PremiumOnly = false
+    Name = "Autos",
+    Icon = "rbxassetid://139399181305478",
+    PremiumOnly = false
 })
 local Tab6 = Window:MakeTab({
-  Name = "Profile",
-  Icon = "rbxassetid://117514197104865",
-  PremiumOnly = false
+    Name = "Profile",
+    Icon = "rbxassetid://117514197104865",
+    PremiumOnly = false
 })
 local Tab7 = Window:MakeTab({
-  Name = "Settings",
-  Icon = "rbxassetid://86008121828405",
-  PremiumOnly = false
+    Name = "Settings",
+    Icon = "rbxassetid://86008121828405",
+    PremiumOnly = false
 })
 
 -----------------------------------------------
@@ -93,28 +182,69 @@ local Tab7 = Window:MakeTab({
 -----------------------------------------------
 
 local Section = Tab:AddSection({
-  Name = "Information"
+    Name = "Information"
 })
 
 Tab:AddParagraph("Hello " .. api.nickname .. "!","\nScript version: b0.1\nLast Update: 10/19/2024\n")
 Tab:AddButton({
 	Name = "Copy Discord Server Link",
 	Callback = function()
-      setclipboard("https://discord.gg/gPt63592fA")
+        setclipboard("https://discord.gg/gPt63592fA")
   	end    
 })
 
 -----------------------------------------------
 
+Tab2:AddToggle({
+    Name = "Unrender Breakables",
+    Default = false,
+    Callback = function(Value)
+        _G.Breakables = Value
+        if _G.Breakables == true then
+            hideBreakables()
+        else
+            showBreakables()
+        end
+    end
+})
+
+Tab2:AddToggle({
+    Name = "Unrender Pets",
+    Default = false,
+    Callback = function(Value)
+        _G.Pets = Value
+        if _G.Pets == true then
+            hidePets()
+        else
+            showPets()
+        end
+    end
+})
+
+Tab2:AddToggle({
+    Name = "Unrender World/Water",
+    Default = false,
+    Callback = function(Value)
+        _G.World = Value
+        if _G.World == true then
+            hideWorld()
+            hideDetails()
+        else
+            showWorld()
+            showDetails()
+        end
+    end
+})
+
 -----------------------------------------------
 
 Tab3:AddToggle({
-  Name = "Auto Roll",
-  Default = false,
-  Callback = function(Value)
-      _G.rolls = Value
-      rolls()
-  end    
+    Name = "Auto Roll",
+    Default = false,
+    Callback = function(Value)
+        _G.rolls = Value
+        rolls()
+    end    
 })
 
 -----------------------------------------------
@@ -122,12 +252,12 @@ Tab3:AddToggle({
 -----------------------------------------------
 
 Tab5:AddToggle({
-  Name = "Auto Upgrades",
-  Default = false,
-  Callback = function(Value)
-    _G.autoupgrades = Value
-    autoupgrades()
-  end    
+    Name = "Auto Upgrades",
+    Default = false,
+    Callback = function(Value)
+        _G.autoupgrades = Value
+        autoupgrades()
+    end    
 })
 
 -----------------------------------------------
