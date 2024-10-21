@@ -16,6 +16,12 @@ function rolls()
        wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
   end
 end
+function Unrender1()
+  print("InD")
+end
+function Unrender2()
+  print("InD")
+end
 
 function autoupgrades()
   while _G.autoupgrades == true do
