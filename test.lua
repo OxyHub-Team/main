@@ -47,3 +47,5 @@ local Window = Arrayfield:CreateWindow({
         print(Value)
     end,
  })
+
+ArrayField:LoadConfiguration()
