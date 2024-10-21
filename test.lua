@@ -1,11 +1,11 @@
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/OxyHub-Team/ui-library/refs/heads/main/deflibrary'))()
-local Window = Rayfield:CreateWindow({
+local Arrayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/OxyHub-Team/ui-library/refs/heads/main/deflibrary'))()
+local Window = Arrayfield:CreateWindow({
     Name = "Rayfield Example Window",
     LoadingTitle = "Rayfield Interface Suite",
     LoadingSubtitle = "by Sirius",
     ConfigurationSaving = {
        Enabled = true,
-       FolderName = nil, -- Create a custom folder for your hub/game
+       FolderName = TestHUI, -- Create a custom folder for your hub/game
        FileName = "Big Hub"
     },
     Discord = {
