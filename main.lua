@@ -364,17 +364,7 @@ local Toggle = Tab3:CreateToggle({
 
 -------------------------------------
 
-local Toggle = Tab5:CreateToggle({
-    Name = "Auto Upgrades",
-    CurrentValue = false,
-    Flag = "Auto Upgrades",
-    Callback = function(Value)
-        _G.autoupgrades = Value
-        autoupgrades()
-    end,
- })
-
-local Toggle = Tab5:CreateToggle({
+local Toggle = Tab4:CreateToggle({
     Name = "Auto Farm Fruits",
     CurrentValue = false,
     Flag = "Auto Farm Fruits",
@@ -386,9 +376,21 @@ local Toggle = Tab5:CreateToggle({
 
 -------------------------------------
 
+local Toggle = Tab5:CreateToggle({
+    Name = "Auto Upgrades",
+    CurrentValue = false,
+    Flag = "Auto Upgrades",
+    Callback = function(Value)
+        _G.autoupgrades = Value
+        autoupgrades()
+    end,
+ })
+
+-------------------------------------
+
 Rayfield:Notify({
     Title = "OxyHub successfully loaded!",
-    Content = "PLEASE, if you find a bug or have a suggestion on what to add to the script, let us know on the discord server. It can be found in the Home tab",
+    Content = "PLEASE, if you find a bug or have a suggestion on what to add to the script, let us know on the discord server.",
     Duration = 5,
     Image = 137607810655683,
     Actions = {
