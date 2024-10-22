@@ -1,256 +1,335 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+getgenv().SecureMode = true
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+getgenv().api = loadstring(game:HttpGet("https://raw.githubusercontent.com/Boxking776/kocmoc/main/api.lua"))()
 
-local Window = Fluent:CreateWindow({
-    Title = "PETS GO ┃ OxyHub b0.1",
-    SubTitle = "Developed by OxyHub",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(480, 360),
-    Acrylic = true,
-    Theme = "Aqua",
-    MinimizeKey = Enum.KeyCode.LeftControl
-})
+-------------------------------------
 
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
-local Tabs = {
-    Home = Window:AddTab({ Title = "Home", Icon = "house-plus" }),
-    Optimization = Window:AddTab({ Title = "Optimization", Icon = "wrench" }),
-    Rolls = Window:AddTab({ Title = "Rolls", Icon = "egg" }),
-    Farming = Window:AddTab({ Title = "Farming", Icon = "coins" }),
-    Autos = Window:AddTab({ Title = "Autos", Icon = "cog" }),
-    Profile = Window:AddTab({ Title = "Profile", Icon = "file-user" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
+_G.rolls = true
+_G.autoupgrades = true
+_G.Pets = true
+_G.World = true
+_G.Breakables = true
+_G.Orbs = true
+_G.Fruits = true
 
-local Options = Fluent.Options
+-------------------------------------
 
-do
-    Tabs.Home:AddParagraph({
-        Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!"
-    })
-
-
-
-    Tabs.Home:AddButton({
-        Title = "Button",
-        Description = "Very important button",
-        Callback = function()
-            Window:Dialog({
-                Title = "Title",
-                Content = "This is a dialog",
-                Buttons = {
-                    {
-                        Title = "Confirm",
-                        Callback = function()
-                            print("Confirmed the dialog.")
-                        end
-                    },
-                    {
-                        Title = "Cancel",
-                        Callback = function()
-                            print("Cancelled the dialog.")
-                        end
-                    }
-                }
-            })
-        end
-    })
-
-
-
-    local Toggle = Tabs.Home:AddToggle("MyToggle", {Title = "Toggle", Default = false })
-
-    Toggle:OnChanged(function()
-        print("Toggle changed:", Options.MyToggle.Value)
-    end)
-
-    Options.MyToggle:SetValue(false)
-
-
-    
-    local Slider = Tabs.Home:AddSlider("Slider", {
-        Title = "Slider",
-        Description = "This is a slider",
-        Default = 2,
-        Min = 0,
-        Max = 5,
-        Rounding = 1,
-        Callback = function(Value)
-            print("Slider was changed:", Value)
-        end
-    })
-
-    Slider:OnChanged(function(Value)
-        print("Slider changed:", Value)
-    end)
-
-    Slider:SetValue(3)
-
-
-
-    local Dropdown = Tabs.Home:AddDropdown("Dropdown", {
-        Title = "Dropdown",
-        Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
-        Multi = false,
-        Default = 1,
-    })
-
-    Dropdown:SetValue("four")
-
-    Dropdown:OnChanged(function(Value)
-        print("Dropdown changed:", Value)
-    end)
-
-
-    
-    local MultiDropdown = Tabs.Home:AddDropdown("MultiDropdown", {
-        Title = "Dropdown",
-        Description = "You can select multiple values.",
-        Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
-        Multi = true,
-        Default = {"seven", "twelve"},
-    })
-
-    MultiDropdown:SetValue({
-        three = true,
-        five = true,
-        seven = false
-    })
-
-    MultiDropdown:OnChanged(function(Value)
-        local Values = {}
-        for Value, State in next, Value do
-            table.insert(Values, Value)
-        end
-        print("Mutlidropdown changed:", table.concat(Values, ", "))
-    end)
-
-
-
-    local Colorpicker = Tabs.Home:AddColorpicker("Colorpicker", {
-        Title = "Colorpicker",
-        Default = Color3.fromRGB(96, 205, 255)
-    })
-
-    Colorpicker:OnChanged(function()
-        print("Colorpicker changed:", Colorpicker.Value)
-    end)
-    
-    Colorpicker:SetValueRGB(Color3.fromRGB(0, 255, 140))
-
-
-
-    local TColorpicker = Tabs.Home:AddColorpicker("TransparencyColorpicker", {
-        Title = "Colorpicker",
-        Description = "but you can change the transparency.",
-        Transparency = 0,
-        Default = Color3.fromRGB(96, 205, 255)
-    })
-
-    TColorpicker:OnChanged(function()
-        print(
-            "TColorpicker changed:", TColorpicker.Value,
-            "Transparency:", TColorpicker.Transparency
-        )
-    end)
-
-
-
-    local Keybind = Tabs.Home:AddKeybind("Keybind", {
-        Title = "KeyBind",
-        Mode = "Toggle", -- Always, Toggle, Hold
-        Default = "LeftControl", -- String as the name of the keybind (MB1, MB2 for mouse buttons)
-
-        -- Occurs when the keybind is clicked, Value is `true`/`false`
-        Callback = function(Value)
-            print("Keybind clicked!", Value)
-        end,
-
-        -- Occurs when the keybind itself is changed, `New` is a KeyCode Enum OR a UserInputType Enum
-        ChangedCallback = function(New)
-            print("Keybind changed!", New)
-        end
-    })
-
-    -- OnClick is only fired when you press the keybind and the mode is Toggle
-    -- Otherwise, you will have to use Keybind:GetState()
-    Keybind:OnClick(function()
-        print("Keybind clicked:", Keybind:GetState())
-    end)
-
-    Keybind:OnChanged(function()
-        print("Keybind changed:", Keybind.Value)
-    end)
-
-    task.spawn(function()
-        while true do
-            wait(1)
-
-            -- example for checking if a keybind is being pressed
-            local state = Keybind:GetState()
-            if state then
-                print("Keybind is being held down")
-            end
-
-            if Fluent.Unloaded then break end
-        end
-    end)
-
-    Keybind:SetValue("MB2", "Toggle") -- Sets keybind to MB2, mode to Hold
-
-
-    local Input = Tabs.Home:AddInput("Input", {
-        Title = "Input",
-        Default = "Default",
-        Placeholder = "Placeholder",
-        Numeric = false, -- Only allows numbers
-        Finished = false, -- Only calls callback when you press enter
-        Callback = function(Value)
-            print("Input changed:", Value)
-        end
-    })
-
-    Input:OnChanged(function()
-        print("Input updated:", Input.Value)
-    end)
+function rolls()
+    while _G.rolls == true do
+        game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Eggs_Roll"):InvokeServer()
+        wait(1)  -- Пауза в 1 секунду между вызовами (можно изменить)
+    end
 end
 
 
--- Addons:
--- SaveManager (Allows you to have a configuration system)
--- InterfaceManager (Allows you to have a interface managment system)
+function autoupgrades()
+    while _G.autoupgrades == true do
+	wait(0.5)
+        -- Функция для "прокачки" объекта
+        local function upgradeObject(objectName)
+            game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Upgrades_Purchase"):InvokeServer(objectName)
+            -- Здесь можно добавить логику для прокачки объекта
+        end
 
--- Hand the library over to our managers
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
+        -- Рекурсивная функция для обхода всех объектов, включая вложенные
+        local function processFolder(folder)
+            -- Перебираем все объекты в папке
+            for _, obj in ipairs(folder:GetChildren()) do
+                -- Вызываем функцию для текущего объекта
+                upgradeObject(obj.Name)
 
--- Ignore keys that are used by ThemeManager.
--- (we dont want configs to save themes, do we?)
-SaveManager:IgnoreThemeSettings()
+                -- Если объект сам является контейнером для других объектов (например, это модель или папка),
+                -- вызываем эту же функцию рекурсивно для обработки вложенных объектов
+                if #obj:GetChildren() > 0 then
+                    processFolder(obj)  -- Рекурсивный вызов
+                end
+            end
+        end
 
--- You can add indexes of elements the save manager should ignore
-SaveManager:SetIgnoreIndexes({})
-
--- use case for doing it this way:
--- a script hub could have themes in a global folder
--- and game configs in a separate folder per game
-InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
-
-InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-SaveManager:BuildConfigSection(Tabs.Settings)
+        -- Пример использования: передаем папку для обработки
+        local rootFolder = game:GetService("ReplicatedStorage").__DIRECTORY.Upgrades.Root  -- Замените на вашу папку
+        processFolder(rootFolder)
+    end
+end
 
 
-Window:SelectTab(1)
+function hideDetails()
+    local detailsFolder = game.Workspace:FindFirstChild("MAP"):FindFirstChild("PARTS"):FindFirstChild("DETAILS")  -- Папка с деталями карты
+    local storage = game.ReplicatedStorage:FindFirstChild("Details")  -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Details"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(detailsFolder:GetChildren()) do
+        obj.Parent = storage  -- Перемещаем объект в ReplicatedStorage
+    end
+end
 
-Fluent:Notify({
-    Title = "Fluent",
-    Content = "The script has been loaded.",
-    Duration = 8
-})
+function showDetails()
+    local detailsFolder = game.Workspace:FindFirstChild("MAP"):FindFirstChild("PARTS"):FindFirstChild("DETAILS")  -- Папка с деталями карты
+    local storage = game.ReplicatedStorage:FindFirstChild("Details")  -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Details"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = detailsFolder  -- Перемещаем объекты обратно в Workspace
+    end
+end
 
--- You can use the SaveManager:LoadAutoloadConfig() to load a config
--- which has been marked to be one that auto loads!
-SaveManager:LoadAutoloadConfig()
+
+function hidePets()
+    while _G.Pets == true do
+        local petsFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Pets") -- Папка с питомцами
+        local storage = game.ReplicatedStorage:FindFirstChild("Pets") -- Папка для хранения скрытых объектов
+        if not storage then
+            storage = Instance.new("Folder")
+            storage.Name = "Pets"
+            storage.Parent = game.ReplicatedStorage
+        end
+
+        for _, obj in ipairs(petsFolder:GetChildren()) do
+            if obj.Name ~= "Highlight" then
+                obj.Parent = storage -- Перемещаем объект в ReplicatedStorage
+            end
+        end
+        wait(1)
+    end
+end
+    
+function showPets()
+    local petsFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Pets") -- Папка с питомцами
+    local storage = game.ReplicatedStorage:FindFirstChild("Pets") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Pets"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = petsFolder -- Перемещаем объекты обратно в Pets
+    end
+end
+
+
+function hideWorld()
+    local waterFolder = game.Workspace:WaitForChild("OUTER") -- Папка с водой
+    local storage = game.ReplicatedStorage:FindFirstChild("World") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "World"
+        storage.Parent = game.ReplicatedStorage
+    end
+
+    for _, obj in ipairs(waterFolder:GetChildren()) do
+        obj.Parent = storage -- Перемещаем объект в ReplicatedStorage
+    end
+end
+
+function showWorld()
+    local waterFolder = game.Workspace:WaitForChild("OUTER") -- Папка с водой 
+    local storage = game.ReplicatedStorage:FindFirstChild("World") -- Папка для хранения скрытых объектов 
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "World"
+        storage.Parent = game.ReplicatedStorage
+    end
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = waterFolder -- Перемещаем объекты обратно в Water 
+    end 
+end
+
+
+function hideBreakables()
+    while _G.Breakables == true do
+        local breakablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables") -- Папка с ломаемыми объектами
+        local storage = game.ReplicatedStorage:FindFirstChild("Breakables") -- Папка для хранения скрытых объектов
+        if not storage then
+            storage = Instance.new("Folder")
+            storage.Name = "Breakables"
+            storage.Parent = game.ReplicatedStorage
+        end
+
+        for _, obj in ipairs(breakablesFolder:GetChildren()) do
+            if obj.Name ~= "Highlight" then
+                obj.Parent = storage -- Перемещаем объект в ReplicatedStorage 
+            end
+        end
+        wait(1)
+    end
+end
+
+function showBreakables()
+    local breakablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables") -- Папка с ломаемыми объектами
+    local storage = game.ReplicatedStorage:FindFirstChild("Breakables") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Breakables"
+        storage.Parent = game.ReplicatedStorage 
+    end
+
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = breakablesFolder -- Перемещаем объекты обратно в Breakables
+    end
+end
+
+
+
+function hideOrbs()
+    while _G.Orbs == true do
+        local breakablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Orbs") -- Папка с ломаемыми объектами
+        local storage = game.ReplicatedStorage:FindFirstChild("Orbs") -- Папка для хранения скрытых объектов
+        if not storage then
+            storage = Instance.new("Folder")
+            storage.Name = "Orbs"
+            storage.Parent = game.ReplicatedStorage 
+        end
+
+        for _, obj in ipairs(breakablesFolder:GetChildren()) do
+            if obj.Name ~= "Highlight" then 
+                obj.Parent = storage -- Перемещаем объект в ReplicatedStorage 
+            end
+        end
+        wait(1)
+    end
+end
+
+function showOrbs()
+    local breakablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Orbs") -- Папка с ломаемыми объектами
+    local storage = game.ReplicatedStorage:FindFirstChild("Orbs") -- Папка для хранения скрытых объектов
+    if not storage then
+        storage = Instance.new("Folder")
+        storage.Name = "Orbs"
+        storage.Parent = game.ReplicatedStorage 
+    end
+
+    for _, obj in ipairs(storage:GetChildren()) do
+        obj.Parent = breakablesFolder -- Перемещаем объекты обратно в Breakables
+    end
+end
+
+function teleportToFruits()
+    local player = game.Players.LocalPlayer -- Получаем игрока (если скрипт локальный)
+    local character = player.Character or player.CharacterAdded:Wait() -- Получаем персонажа игрока
+    while _G.Fruits == true do
+        local replicatedBreakablesFolder = game:GetService("ReplicatedStorage"):WaitForChild("Breakables") -- Папка с ломаемыми объектами в ReplicatedStorage
+        local breakablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables") -- Папка с ломаемыми объектами в Workspace
+
+        if _G.Breakables == true then
+            -- Проходим по всем объектам в ReplicatedStorage.Breakables
+            for _, obj in ipairs(replicatedBreakablesFolder:GetChildren()) do
+                if obj:FindFirstChild("base") then -- Проверяем, есть ли дочерний объект с именем "base"
+                    -- Переносим объект в Workspace
+                    obj.Parent = breakablesFolder -- Переносим в нужную папку
+
+                    -- Теперь проверяем, есть ли у клонированного объекта "base"
+                    local basePart = obj:FindFirstChild("base") -- Получаем объект "base"
+                    character:SetPrimaryPartCFrame(basePart.CFrame) -- Телепортируем персонажа к объекту "base"
+                end
+            end
+        elseif _G.Breakables == false then
+            for _, obj in ipairs(breakablesFolder:GetChildren()) do
+                if obj:FindFirstChild("base") then -- Проверяем, есть ли дочерний объект с именем "base"
+                    local basePart = obj.base -- Получаем объект "base"
+                    character:SetPrimaryPartCFrame(basePart.CFrame) -- Телепортируем персонажа к объекту "base"        
+                end
+            end
+        end
+        wait(2)
+    end
+end
+
+-------------------------------------
+
+
+local Window = Rayfield:CreateWindow({
+    Name = "PETS GO ┃ OxyHub b0.1",
+    LoadingTitle = "OxyHub is loading",
+    LoadingSubtitle = "by sexy boys",
+    ConfigurationSaving = {
+       Enabled = true,
+       FolderName = OxyHub,
+       FileName = "PETSGO"
+    },
+    Discord = {
+       Enabled = false,
+       Invite = "noinvitelink",
+       RememberJoins = true
+    },
+    KeySystem = false,
+    KeySettings = {
+       Title = "Untitled",
+       Subtitle = "Key System",
+       Note = "No method of obtaining the key is provided",
+       FileName = "Key",
+       SaveKey = true,
+       GrabKeyFromSite = false,
+       Key = {"Hello"}
+    }
+ })
+-------------------------------------
+
+ local Tab = Window:CreateTab("Home", 138276043416989)
+ local Tab2 = Window:CreateTab("Optimization", 103268983581906)
+ local Tab3 = Window:CreateTab("Rolls", 106353115333120)
+ local Tab4 = Window:CreateTab("Farming", 135708807327995)
+ local Tab5 = Window:CreateTab("Autos", 139399181305478)
+ local Tab6 = Window:CreateTab("Profile", 117514197104865)
+ local Tab7 = Window:CreateTab("Settings", 86008121828405)
+
+-------------------------------------
+
+ local Section = Tab:CreateSection("Information:")
+ local Paragraph = Tab:CreateParagraph({Title = "Hello " .. api.nickname .. "!", Content = "\nScript version: b0.1\nLast Update: 10/19/2024\n"})
+ local Button = Tab:CreateButton({
+    Name = "Copy Discord Server Link",
+    Callback = function()
+        setclipboard("https://discord.gg/JRf8ynwAYC")
+    end,
+ })
+
+-------------------------------------
+
+local Toggle = Tab:CreateToggle({
+    Name = "Unrender Orbs",
+    CurrentValue = false,
+    Flag = "Unrender-Orbs",
+    Callback = function(Value)
+        _G.Orbs = Value
+        if _G.Orbs == true then
+            hideOrbs()
+        else
+            showOrbs()
+        end
+    end,
+ })
+
+local Toggle = Tab:CreateToggle({
+    Name = "Unrender Breakables",
+    CurrentValue = false,
+    Flag = "Unrender-Breakables",
+    Callback = function(Value)
+        _G.Breakables = Value
+        if _G.Breakables == true then
+            hideBreakables()
+        else
+            showBreakables()
+        end
+    end,
+ })
+local Toggle = Tab:CreateToggle({
+    Name = "Unrender Pets",
+    CurrentValue = false,
+    Flag = "Unrender-Pets",
+    Callback = function(Value)
+        _G.Pets = Value
+        if _G.Pets == true then
+            hidePets()
+        else
+            showPets()
+        end
+    end,
+ })
+
+-------------------------------------
