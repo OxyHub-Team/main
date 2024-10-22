@@ -290,11 +290,12 @@ local Window = Rayfield:CreateWindow({
  })
 
 -------------------------------------
+local Paragraph = Tab:CreateParagraph({Title = "ATTENTION!", Content = "Sometimes after optimization functions, you will need to re-enter the game to enable them back."})
 
-local Toggle = Tab:CreateToggle({
+local Toggle = Tab2:CreateToggle({
     Name = "Unrender Orbs",
     CurrentValue = false,
-    Flag = "Unrender-Orbs",
+    Flag = "Unrender Orbs",
     Callback = function(Value)
         _G.Orbs = Value
         if _G.Orbs == true then
@@ -305,10 +306,10 @@ local Toggle = Tab:CreateToggle({
     end,
  })
 
-local Toggle = Tab:CreateToggle({
+local Toggle = Tab2:CreateToggle({
     Name = "Unrender Breakables",
     CurrentValue = false,
-    Flag = "Unrender-Breakables",
+    Flag = "Unrender Breakables",
     Callback = function(Value)
         _G.Breakables = Value
         if _G.Breakables == true then
@@ -318,10 +319,11 @@ local Toggle = Tab:CreateToggle({
         end
     end,
  })
-local Toggle = Tab:CreateToggle({
+
+local Toggle = Tab2:CreateToggle({
     Name = "Unrender Pets",
     CurrentValue = false,
-    Flag = "Unrender-Pets",
+    Flag = "Unrender Pets",
     Callback = function(Value)
         _G.Pets = Value
         if _G.Pets == true then
@@ -330,6 +332,75 @@ local Toggle = Tab:CreateToggle({
             showPets()
         end
     end,
+ })
+
+local Toggle = Tab2:CreateToggle({
+    Name = "Unrender World/Water",
+    CurrentValue = false,
+    Flag = "Unrender World/Water",
+    Callback = function(Value)
+        _G.World = Value
+        if _G.World == true then
+            hideWorld()
+            hideDetails()
+        else
+            showWorld()
+            showDetails()
+        end
+    end,
+ })
+
+-------------------------------------
+
+local Toggle = Tab3:CreateToggle({
+    Name = "Auto Roll",
+    CurrentValue = false,
+    Flag = "Auto Roll",
+    Callback = function(Value)
+        _G.rolls = Value
+        rolls()
+    end,
+ })
+
+-------------------------------------
+
+local Toggle = Tab3:CreateToggle({
+    Name = "Auto Upgrades",
+    CurrentValue = false,
+    Flag = "Auto Upgrades",
+    Callback = function(Value)
+        _G.autoupgrades = Value
+        autoupgrades()
+    end,
+ })
+
+local Toggle = Tab3:CreateToggle({
+    Name = "Auto Farm Fruits",
+    CurrentValue = false,
+    Flag = "Auto Farm Fruits",
+    Callback = function(Value)
+        _G.Fruits = Value
+        teleportToFruits()
+    end,
+ })
+
+-------------------------------------
+
+Rayfield:LoadConfiguration()
+
+Rayfield:Notify({
+    Title = "OxyHub successfully loaded!",
+    Content = "Notification Content",
+    Duration = 5,
+    Image = 137607810655683,
+    Actions = {
+       Ignore = {
+          Name = "Okay!",
+          Callback = function()
+          print("okay")
+       end
+    },
+ },
  })
 
 -------------------------------------
