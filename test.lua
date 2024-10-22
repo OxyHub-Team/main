@@ -290,7 +290,7 @@ local Window = Rayfield:CreateWindow({
  })
 
 -------------------------------------
-local Paragraph = Tab:CreateParagraph({Title = "ATTENTION!", Content = "Sometimes after optimization functions, you will need to re-enter the game to enable them back."})
+local Paragraph = Tab2:CreateParagraph({Title = "ATTENTION!", Content = "\nSometimes after optimization functions, you will need to re-enter the game to enable them back.\n"})
 
 local Toggle = Tab2:CreateToggle({
     Name = "Unrender Orbs",
@@ -364,7 +364,7 @@ local Toggle = Tab3:CreateToggle({
 
 -------------------------------------
 
-local Toggle = Tab3:CreateToggle({
+local Toggle = Tab5:CreateToggle({
     Name = "Auto Upgrades",
     CurrentValue = false,
     Flag = "Auto Upgrades",
@@ -374,7 +374,7 @@ local Toggle = Tab3:CreateToggle({
     end,
  })
 
-local Toggle = Tab3:CreateToggle({
+local Toggle = Tab5:CreateToggle({
     Name = "Auto Farm Fruits",
     CurrentValue = false,
     Flag = "Auto Farm Fruits",
@@ -385,8 +385,6 @@ local Toggle = Tab3:CreateToggle({
  })
 
 -------------------------------------
-
-Rayfield:LoadConfiguration()
 
 Rayfield:Notify({
     Title = "OxyHub successfully loaded!",
@@ -403,4 +401,5 @@ Rayfield:Notify({
  },
  })
 
+ Rayfield:LoadConfiguration()
 -------------------------------------
