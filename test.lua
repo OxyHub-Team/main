@@ -8,8 +8,9 @@ local Window = Fluent:CreateWindow({
     TabWidth = 160,
     Size = UDim2.fromOffset(480, 360),
     Acrylic = true,
-    Theme = "Aqua",
+    Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
+})
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
